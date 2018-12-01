@@ -142,7 +142,7 @@ DataMap.prototype.createMap = function() {
  * @returns {Number} Physical column index.
  */
 DataMap.prototype.colToProp = function(col) {
-  const physicalColumn = this.instance.runHooks('modifyCol', col);
+  const physicalColumn = this.instance.fastHooks.modifyCol(col);
 
   if (!isNaN(physicalColumn) && this.colToPropCache && typeof this.colToPropCache[physicalColumn] !== 'undefined') {
     return this.colToPropCache[physicalColumn];
@@ -495,11 +495,11 @@ DataMap.prototype.filterData = function(index, amount) {
  * @param {Number} prop
  */
 DataMap.prototype.get = function(row, prop) {
-  const physicalRow = this.instance.runHooks('modifyRow', row);
+  const physicalRow = this.instance.fastHooks.modifyRow(row);
 
   let dataRow = this.dataSource[physicalRow];
   // TODO: To remove, use 'modifyData' hook instead (see below)
-  const modifiedRowData = this.instance.runHooks('modifyRowData', physicalRow);
+  const modifiedRowData = this.instance.fastHooks.modifyRowData(physicalRow);
 
   dataRow = isNaN(modifiedRowData) ? modifiedRowData : dataRow;
   //
@@ -581,11 +581,11 @@ DataMap.prototype.getCopyable = function(row, prop) {
  * @param {String} [source] Source of hook runner.
  */
 DataMap.prototype.set = function(row, prop, value, source) {
-  const physicalRow = this.instance.runHooks('modifyRow', row, source || 'datamapGet');
+  const physicalRow = this.instance.fastHooks.modifyRow(row, source || 'datamapGet');
   let newValue = value;
   let dataRow = this.dataSource[physicalRow];
   // TODO: To remove, use 'modifyData' hook instead (see below)
-  const modifiedRowData = this.instance.runHooks('modifyRowData', physicalRow);
+  const modifiedRowData = this.instance.fastHooks.modifyRowData(physicalRow);
 
   dataRow = isNaN(modifiedRowData) ? modifiedRowData : dataRow;
   //
@@ -645,7 +645,7 @@ DataMap.prototype.visualRowsToPhysical = function(index, amount) {
   let row;
 
   while (physicRow < totalRows && rowsToRemove) {
-    row = this.instance.runHooks('modifyRow', physicRow);
+    row = this.instance.fastHooks.modifyRow(physicRow);
     logicRows.push(row);
 
     rowsToRemove -= 1;
@@ -668,7 +668,7 @@ DataMap.prototype.visualColumnsToPhysical = function(index, amount) {
   let colsToRemove = amount;
 
   while (physicalCol < totalCols && colsToRemove) {
-    const col = this.instance.runHooks('modifyCol', physicalCol);
+    const col = this.instance.fastHooks.modifyCol(physicalCol);
 
     visualCols.push(col);
 
@@ -714,7 +714,7 @@ DataMap.prototype.getLength = function() {
 
   let length = this.instance.countSourceRows();
 
-  if (this.instance.hasHook('modifyRow')) {
+  if (this.instance.fastHooks.isNoop(this.instance.fastHooks.modifyRow)) {
     let reValidate = this.skipCache;
 
     this.interval.start();
@@ -725,7 +725,7 @@ DataMap.prototype.getLength = function() {
     this.latestSourceRowsCount = length;
     if (this.cachedLength === null || reValidate) {
       rangeEach(length - 1, (row) => {
-        const physicalRow = this.instance.runHooks('modifyRow', row);
+        const physicalRow = this.instance.fastHooks.modifyRow(row);
 
         if (physicalRow === null) {
           length -= 1;
@@ -794,7 +794,7 @@ DataMap.prototype.getRange = function(start, end, destination) {
 
   for (r = Math.min(start.row, end.row); r <= rlen; r++) {
     row = [];
-    const physicalRow = this.instance.runHooks('modifyRow', r);
+    const physicalRow = this.instance.fastHooks.modifyRow(r);
 
     for (c = Math.min(start.col, end.col); c <= clen; c++) {
 

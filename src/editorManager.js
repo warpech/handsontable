@@ -339,7 +339,7 @@ function EditorManager(instance, priv, selection) {
     const col = instance.selection.selectedRange.current().highlight.col;
     const prop = instance.colToProp(col);
     const td = instance.getCell(row, col);
-    const originalValue = instance.getSourceDataAtCell(instance.runHooks('modifyRow', row), col);
+    const originalValue = instance.getSourceDataAtCell(instance.fastHooks.modifyRow(row), col);
     const cellProperties = instance.getCellMeta(row, col);
     const editorClass = instance.getCellEditor(cellProperties);
 

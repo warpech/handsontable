@@ -167,7 +167,7 @@ class AutoColumnSize extends BasePlugin {
     this.addHook('afterLoadData', () => this.onAfterLoadData());
     this.addHook('beforeChange', changes => this.onBeforeChange(changes));
     this.addHook('beforeRender', force => this.onBeforeRender(force));
-    this.addHook('modifyColWidth', (width, col) => this.getColumnWidth(col, width));
+    this.hot.fastHooks.modifyColWidth = this.hot.fastHooks.after(this.hot.fastHooks.modifyColWidth, (width, col) => this.getColumnWidth(col, width));
     this.addHook('afterInit', () => this.onAfterInit());
     super.enablePlugin();
   }

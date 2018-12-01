@@ -42,22 +42,26 @@ describe('RecordTranslator', () => {
 
   it('should translate to physical row using hook system', () => {
     const hotMock = {
-      runHooks: jasmine.createSpy().and.returnValue(54),
+      fastHooks: {
+        modifyRow: jasmine.createSpy().and.returnValue(54)
+      }
     };
     const t = new RecordTranslator(hotMock);
 
     expect(t.toPhysicalRow(12)).toBe(54);
-    expect(hotMock.runHooks).toHaveBeenCalledWith('modifyRow', 12);
+    expect(hotMock.fastHooks.modifyRow).toHaveBeenCalledWith(12);
   });
 
   it('should translate to physical column using hook system', () => {
     const hotMock = {
-      runHooks: jasmine.createSpy().and.returnValue(54),
+      fastHooks: {
+        modifyCol: jasmine.createSpy().and.returnValue(54)
+      }
     };
     const t = new RecordTranslator(hotMock);
 
     expect(t.toPhysicalColumn(12)).toBe(54);
-    expect(hotMock.runHooks).toHaveBeenCalledWith('modifyCol', 12);
+    expect(hotMock.fastHooks.modifyCol).toHaveBeenCalledWith(12);
   });
 
   it('should translate to physical coordinates (as an object)', () => {

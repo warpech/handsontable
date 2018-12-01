@@ -145,7 +145,7 @@ class AutoRowSize extends BasePlugin {
     this.addHook('beforeColumnSort', () => this.clearCache());
     this.addHook('beforeRender', force => this.onBeforeRender(force));
     this.addHook('beforeRowMove', (rowStart, rowEnd) => this.onBeforeRowMove(rowStart, rowEnd));
-    this.addHook('modifyRowHeight', (height, row) => this.getRowHeight(row, height));
+    this.hot.fastHooks.modifyRowHeight = this.hot.fastHooks.after(this.hot.fastHooks.modifyRowHeight, (height, row) => this.getRowHeight(row, height));
     this.addHook('modifyColumnHeaderHeight', () => this.getColumnHeaderHeight());
     super.enablePlugin();
   }

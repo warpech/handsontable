@@ -120,7 +120,7 @@ class ManualColumnMove extends BasePlugin {
     this.addHook('beforeOnCellMouseDown', (event, coords, TD, blockCalculations) => this.onBeforeOnCellMouseDown(event, coords, TD, blockCalculations));
     this.addHook('beforeOnCellMouseOver', (event, coords, TD, blockCalculations) => this.onBeforeOnCellMouseOver(event, coords, TD, blockCalculations));
     this.addHook('afterScrollVertically', () => this.onAfterScrollVertically());
-    this.addHook('modifyCol', (row, source) => this.onModifyCol(row, source));
+    this.hot.fastHooks.modifyCol = this.hot.fastHooks.after(this.hot.fastHooks.modifyCol, (row, source) => this.onModifyCol(row, source));
     this.addHook('beforeRemoveCol', (index, amount) => this.onBeforeRemoveCol(index, amount));
     this.addHook('afterRemoveCol', () => this.onAfterRemoveCol());
     this.addHook('afterCreateCol', (index, amount) => this.onAfterCreateCol(index, amount));
@@ -663,7 +663,7 @@ class ManualColumnMove extends BasePlugin {
     if (index !== false) {
       // Collect physical row index.
       rangeEach(index, index + amount - 1, (removedIndex) => {
-        this.removedColumns.push(this.hot.runHooks('modifyCol', removedIndex, this.pluginName));
+        this.removedColumns.push(this.hot.fastHooks.modifyCol(removedIndex, this.pluginName));
       });
     }
   }

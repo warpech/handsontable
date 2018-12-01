@@ -257,16 +257,6 @@ const REGISTERED_HOOKS = [
   'beforeRemoveCellClassNames',
 
   /**
-   * Fired after getting the cell settings.
-   *
-   * @event Hooks#afterGetCellMeta
-   * @param {Number} row Visual row index.
-   * @param {Number} column Visual column index.
-   * @param {Object} cellProperties Object containing the cell properties.
-   */
-  'afterGetCellMeta',
-
-  /**
    * Fired after retrieving information about a column header and appending it to the table header.
    *
    * @event Hooks#afterGetColHeader
@@ -363,30 +353,6 @@ const REGISTERED_HOOKS = [
    * @param {HTMLTableCellElement} TD Cell's TD (or TH) element.
    */
   'afterOnCellContextMenu',
-
-  /**
-   * Fired after hovering a cell or row/column header with the mouse cursor. In case the row/column header was
-   * hovered, the index is negative.
-   *
-   * For example, hovering over the row header of cell (0, 0) results with `afterOnCellMouseOver` called
-   * with coords `{row: 0, col: -1}`.
-   *
-   * @event Hooks#afterOnCellMouseOver
-   * @param {Event} event `mouseover` event object.
-   * @param {CellCoords} coords Hovered cell's visual coordinate object.
-   * @param {HTMLTableCellElement} TD Cell's TD (or TH) element.
-   */
-  'afterOnCellMouseOver',
-
-  /**
-   * Fired after leaving a cell or row/column header with the mouse cursor.
-   *
-   * @event Hooks#afterOnCellMouseOut
-   * @param {Event} event `mouseout` event object.
-   * @param {CellCoords} coords Leaved cell's visual coordinate object.
-   * @param {HTMLTableCellElement} TD Cell's TD (or TH) element.
-   */
-  'afterOnCellMouseOut',
 
   /**
    * Fired after one or more columns are removed.
@@ -701,16 +667,6 @@ const REGISTERED_HOOKS = [
   'beforeDrawBorders',
 
   /**
-   * Fired before getting cell settings.
-   *
-   * @event Hooks#beforeGetCellMeta
-   * @param {Number} row Visual row index.
-   * @param {Number} column Visual column index.
-   * @param {Object} cellProperties Object containing the cell's properties.
-   */
-  'beforeGetCellMeta',
-
-  /**
    * Fired before cell meta is removed.
    *
    * @event Hooks#beforeRemoveCellMeta
@@ -906,14 +862,6 @@ const REGISTERED_HOOKS = [
   'init',
 
   /**
-   * Fired when a column index is about to be modified by a callback function.
-   *
-   * @event Hooks#modifyCol
-   * @param {Number} column Visual column index.
-   */
-  'modifyCol',
-
-  /**
    * Fired when a column index is about to be de-modified by a callback function.
    *
    * @event Hooks#unmodifyCol
@@ -930,46 +878,12 @@ const REGISTERED_HOOKS = [
   'unmodifyRow',
 
   /**
-   * Fired when a column header index is about to be modified by a callback function.
-   *
-   * @event Hooks#modifyColHeader
-   * @param {Number} column Visual column header index.
-   */
-  'modifyColHeader',
-
-  /**
-   * Fired when a column width is about to be modified by a callback function.
-   *
-   * @event Hooks#modifyColWidth
-   * @param {Number} width Current column width.
-   * @param {Number} column Visual column index.
-   */
-  'modifyColWidth',
-
-  /**
-   * Fired when a row index is about to be modified by a callback function.
-   *
-   * @event Hooks#modifyRow
-   * @param {Number} row Visual row index.
-   */
-  'modifyRow',
-
-  /**
    * Fired when a row header index is about to be modified by a callback function.
    *
    * @event Hooks#modifyRowHeader
    * @param {Number} row Visual row header index.
    */
   'modifyRowHeader',
-
-  /**
-   * Fired when a row height is about to be modified by a callback function.
-   *
-   * @event Hooks#modifyRowHeight
-   * @param {Number} height Row height.
-   * @param {Number} row Visual row index.
-   */
-  'modifyRowHeight',
 
   /**
    * Fired when a data was retrieved or modified.
@@ -981,14 +895,6 @@ const REGISTERED_HOOKS = [
    * @param {String} ioMode String which indicates for what operation hook is fired (`get` or `set`).
    */
   'modifyData',
-
-  /**
-   * Fired when a data was retrieved or modified.
-   *
-   * @event Hooks#modifyRowData
-   * @param {Number} row Physical row index.
-   */
-  'modifyRowData',
 
   /**
    * Used to modify the cell coordinates when using the `getCell` method.

@@ -109,7 +109,7 @@ class DataSource {
   getAtCell(row, column) {
     let result = null;
 
-    const modifyRowData = this.hot.runHooks('modifyRowData', row);
+    const modifyRowData = this.hot.fastHooks.modifyRowData(row);
 
     const dataRow = isNaN(modifyRowData) ? modifyRowData : this.data[row];
 

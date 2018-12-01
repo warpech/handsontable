@@ -146,7 +146,7 @@ class ColumnSorting extends BasePlugin {
 
     this.addHook('afterTrimRow', () => this.sortByPresetSortStates());
     this.addHook('afterUntrimRow', () => this.sortByPresetSortStates());
-    this.addHook('modifyRow', (row, source) => this.onModifyRow(row, source));
+    this.hot.fastHooks.modifyRow = this.hot.fastHooks.after(this.hot.fastHooks.modifyRow, (row, source) => this.onModifyRow(row, source));
     this.addHook('unmodifyRow', (row, source) => this.onUnmodifyRow(row, source));
     this.addHook('afterGetColHeader', (column, TH) => this.onAfterGetColHeader(column, TH));
     this.addHook('beforeOnCellMouseDown', (event, coords, TD, controller) => this.onBeforeOnCellMouseDown(event, coords, TD, controller));

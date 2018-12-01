@@ -74,7 +74,7 @@ class ManualRowResize extends BasePlugin {
       this.manualRowHeights = [];
     }
 
-    this.addHook('modifyRowHeight', (height, row) => this.onModifyRowHeight(height, row));
+    this.hot.fastHooks.modifyRowHeight = this.hot.fastHooks.after(this.hot.fastHooks.modifyRowHeight, (height, row) => this.onModifyRowHeight(height, row));
 
     // Handsontable.hooks.register('beforeRowResize');
     // Handsontable.hooks.register('afterRowResize');
@@ -438,7 +438,7 @@ class ManualRowResize extends BasePlugin {
    * @fires Hooks#modifyRow
    */
   setManualSize(row, height) {
-    const physicalRow = this.hot.runHooks('modifyRow', row);
+    const physicalRow = this.hot.fastHooks.modifyRow(row);
 
     this.manualRowHeights[physicalRow] = height;
 
@@ -459,7 +459,7 @@ class ManualRowResize extends BasePlugin {
     if (this.enabled) {
       const autoRowSizePlugin = this.hot.getPlugin('autoRowSize');
       const autoRowHeightResult = autoRowSizePlugin ? autoRowSizePlugin.heights[row] : null;
-      const physicalRow = this.hot.runHooks('modifyRow', row);
+      const physicalRow = this.hot.fastHooks.modifyRow(row);
       const manualRowHeight = this.manualRowHeights[physicalRow];
 
       if (manualRowHeight !== void 0 && (manualRowHeight === autoRowHeightResult || manualRowHeight > (height || 0))) {

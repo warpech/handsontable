@@ -103,7 +103,7 @@ class MergeCells extends BasePlugin {
     this.addHook('afterIsMultipleSelection', (...args) => this.onAfterIsMultipleSelection(...args));
     this.addHook('afterRenderer', (...args) => this.onAfterRenderer(...args));
     this.addHook('afterContextMenuDefaultOptions', (...args) => this.addMergeActionsToContextMenu(...args));
-    this.addHook('afterGetCellMeta', (...args) => this.onAfterGetCellMeta(...args));
+    this.hot.fastHooks.afterGetCellMeta = this.hot.fastHooks.after(this.hot.fastHooks.afterGetCellMeta, (...args) => this.onAfterGetCellMeta(...args));
     this.addHook('afterViewportRowCalculatorOverride', (...args) => this.onAfterViewportRowCalculatorOverride(...args));
     this.addHook('afterViewportColumnCalculatorOverride', (...args) => this.onAfterViewportColumnCalculatorOverride(...args));
     this.addHook('modifyAutofillRange', (...args) => this.onModifyAutofillRange(...args));

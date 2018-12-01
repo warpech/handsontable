@@ -80,18 +80,18 @@ function UndoRedo(instance) {
       const origRow = originalData[i];
 
       rangeEach(columnIndex, columnIndex + (amount - 1), (j) => {
-        column.push(origRow[instance.runHooks('modifyCol', j)]);
+        column.push(origRow[instance.fastHooks.modifyCol(j)]);
       });
       removedData.push(column);
     });
 
     rangeEach(amount - 1, (i) => {
-      indexes.push(instance.runHooks('modifyCol', columnIndex + i));
+      indexes.push(instance.fastHooks.modifyCol(columnIndex + i));
     });
 
     if (Array.isArray(instance.getSettings().colHeaders)) {
       rangeEach(amount - 1, (i) => {
-        headers.push(instance.getSettings().colHeaders[instance.runHooks('modifyCol', columnIndex + i)] || null);
+        headers.push(instance.getSettings().colHeaders[instance.fastHooks.modifyCol(columnIndex + i)] || null);
       });
     }
 

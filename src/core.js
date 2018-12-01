@@ -31,6 +31,7 @@ import { getTranslator } from './utils/recordTranslator';
 import { registerAsRootInstance, hasValidParameter, isRootInstance } from './utils/rootInstance';
 import { CellCoords, ViewportColumnsCalculator } from './3rdparty/walkontable/src';
 import Hooks from './pluginHooks';
+import FastHooks from './fastHooks';
 import DefaultSettings from './defaultSettings';
 import { getCellType } from './cellTypes';
 import { getTranslatedPhrase } from './i18n';
@@ -79,6 +80,8 @@ export default function Core(rootElement, userSettings, rootInstanceSymbol = fal
   let dataSource;
   let grid;
   let editorManager;
+
+  this.fastHooks = new FastHooks();
 
   extend(GridSettings.prototype, DefaultSettings.prototype); // create grid settings as a copy of default settings
   extend(GridSettings.prototype, userSettings); // overwrite defaults with user settings
@@ -2370,7 +2373,7 @@ export default function Core(rootElement, userSettings, rootInstanceSymbol = fal
     cellProperties.prop = prop;
     cellProperties.instance = instance;
 
-    instance.runHooks('beforeGetCellMeta', row, column, cellProperties);
+    instance.fastHooks.beforeGetCellMeta(row, column, cellProperties);
     extend(cellProperties, expandType(cellProperties)); // for `type` added in beforeGetCellMeta
 
     if (cellProperties.cells) {
@@ -2382,7 +2385,7 @@ export default function Core(rootElement, userSettings, rootInstanceSymbol = fal
       }
     }
 
-    instance.runHooks('afterGetCellMeta', row, column, cellProperties);
+    instance.fastHooks.afterGetCellMeta(row, column, cellProperties);
 
     return cellProperties;
   };
@@ -2683,7 +2686,7 @@ export default function Core(rootElement, userSettings, rootInstanceSymbol = fal
    */
   this.getColHeader = function(column) {
     const columnsAsFunc = priv.settings.columns && isFunction(priv.settings.columns);
-    const columnIndex = instance.runHooks('modifyColHeader', column);
+    const columnIndex = instance.fastHooks.modifyColHeader(column);
     let result = priv.settings.colHeaders;
 
     if (columnIndex === void 0) {
@@ -2711,7 +2714,7 @@ export default function Core(rootElement, userSettings, rootInstanceSymbol = fal
         return arr[visualColumnIndex];
       };
       const baseCol = columnIndex;
-      const physicalColumn = instance.runHooks('modifyCol', baseCol);
+      const physicalColumn = instance.fastHooks.modifyCol(baseCol);
 
       const prop = translateVisualIndexToColumns(physicalColumn);
 
@@ -2786,7 +2789,7 @@ export default function Core(rootElement, userSettings, rootInstanceSymbol = fal
   this.getColWidth = function(column) {
     let width = instance._getColWidthFromSettings(column);
 
-    width = instance.runHooks('modifyColWidth', width, column);
+    width = instance.fastHooks.modifyColWidth(width, column);
 
     if (width === void 0) {
       width = ViewportColumnsCalculator.DEFAULT_WIDTH;
@@ -2845,7 +2848,7 @@ export default function Core(rootElement, userSettings, rootInstanceSymbol = fal
   this.getRowHeight = function(row) {
     let height = instance._getRowHeightFromSettings(row);
 
-    height = instance.runHooks('modifyRowHeight', height, row);
+    height = instance.fastHooks.modifyRowHeight(height, row);
 
     return height;
   };

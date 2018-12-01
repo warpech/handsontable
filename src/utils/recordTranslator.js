@@ -60,7 +60,7 @@ export class RecordTranslator {
    * @returns {Number} Returns physical row index.
    */
   toPhysicalRow(row) {
-    return this.hot.runHooks('modifyRow', row);
+    return this.hot.fastHooks.modifyRow(row);
   }
 
   /**
@@ -70,7 +70,7 @@ export class RecordTranslator {
    * @returns {Number} Returns physical column index.
    */
   toPhysicalColumn(column) {
-    return this.hot.runHooks('modifyCol', column);
+    return this.hot.fastHooks.modifyCol(column);
   }
 
   /**
